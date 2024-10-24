@@ -1,22 +1,19 @@
 pipeline {
-    agent any
+    agent any 
     stages {
-        stage('Setup .NET') {
+        stage('Restore dependencies') { 
             steps {
-                script {
-                    // Make sure the .NET environment is correctly set up
-                    dotnet 'restore'
-                }
+                bat 'dotnet restore'
             }
         }
-        stage('Build') {
+        stage('Dotnet Build') { 
             steps {
-                dotnet 'build'
+              bat 'dotnet build --no-restore'
             }
         }
-        stage('Test') {
+        stage('Execute Tests') { 
             steps {
-                dotnet 'test'
+                bat 'dotnet test --no-build --verbosity normal'
             }
         }
     }

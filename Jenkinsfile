@@ -1,27 +1,22 @@
 pipeline {
-    agent any 
+    agent any
     stages {
         stage('Setup .NET') {
             steps {
                 script {
-                    // This assumes you have the .NET plugin installed
-                    dotnet '6.0' // Specify the desired .NET version
+                    // Make sure the .NET environment is correctly set up
+                    dotnet 'restore'
                 }
             }
         }
-        stage('Restore dependencies') { 
+        stage('Build') {
             steps {
-                bat 'dotnet restore'
+                dotnet 'build'
             }
         }
-        stage('Dotnet Build') { 
+        stage('Test') {
             steps {
-                bat 'dotnet build --no-restore'
-            }
-        }
-        stage('Execute Tests') { 
-            steps {
-                bat 'dotnet test --no-build --verbosity normal'
+                dotnet 'test'
             }
         }
     }
